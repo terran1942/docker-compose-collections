@@ -6,8 +6,8 @@ services:
     networks: 
       - cluster
     ports:
-      - "192.168.0.130:9200:9200"
-      - "192.168.0.130:9300:9300"
+      - "9200:9200"
+      - "9300:9300"
     environment:
       discovery.type: single-node
     volumes:
@@ -15,13 +15,16 @@ services:
   kibana:
     container_name: kibana
     image: docker.elastic.co/kibana/kibana:6.6.0
+    depends_on: [elasticsearch]
     networks: 
       - cluster
+    ports: 
+      - "5601:5601"
     environment:
-      SERVER_NAME: kibana
-      SERVER_HOST: 192.168.0.130
-      SERVER_PORT: 5601
-      ELASTICSEARCH_HOSTS: http://192.168.0.130:9200
+      # SERVER_NAME: kibana
+      # SERVER_HOST: 127.0.0.1
+      # SERVER_PORT: 5601
+      ELASTICSEARCH_HOSTS: http://elasticsearch:9200
 networks: 
   cluster:
     driver: bridge

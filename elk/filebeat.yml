@@ -1,0 +1,12 @@
+filebeat.prospectors:
+  - paths:
+      - /home/yongliang/logs/*log
+    multiline:
+      pattern: ^\d{4}
+      negate: true
+      match: after
+    fields:
+      log_type: game
+
+output.logstash:
+  hosts: ["logstash:5043"]
