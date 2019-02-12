@@ -1,6 +1,6 @@
 filebeat.prospectors:
   - paths:
-      - /home/yongliang/logs/*log
+      - /home/yongliang/logs/*.log
     multiline:
       pattern: ^\d{4}
       negate: true
