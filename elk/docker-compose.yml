@@ -1,0 +1,18 @@
+version: '3'
+services:
+  elasticsearch:
+    container_name: elasticsearch
+    image: docker.elastic.co/elasticsearch/elasticsearch:6.6.0
+    networks: 
+      - cluster
+    ports:
+      - "192.168.0.130:9200:9200"
+      - "192.168.0.130:9300:9300"
+    environment:
+      discovery.type: single-node
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+
+networks: 
+  cluster:
+    driver: bridge
