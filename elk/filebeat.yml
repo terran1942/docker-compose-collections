@@ -9,4 +9,4 @@ filebeat.prospectors:
       log_type: game
 
 output.logstash:
-  hosts: ["logstash:5044"]
+  hosts: ["localhost:5044"]
