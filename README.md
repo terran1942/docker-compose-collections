@@ -2,4 +2,4 @@
 收集各类docker compose配置，已经包括：
 + Kafka
 + VoltDB
-+ ELK stack + filebeat
++ ELK Stack + Filebeat
