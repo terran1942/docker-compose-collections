@@ -1,30 +1,50 @@
-version: '3'
+version: '3.5'
 services:
   elasticsearch:
     container_name: elasticsearch
     image: docker.elastic.co/elasticsearch/elasticsearch:6.6.0
     networks: 
-      - cluster
+      - default
     ports:
-      - "9200:9200"
-      - "9300:9300"
+      - "9200:9200/tcp"
+      - "9300:9300/tcp"
     environment:
-      discovery.type: single-node
+      - "ELASTICSEARCH_USERNAME=yongliang"
+      - "ELASTICSEARCH_PASSWORD=Terran1942"
+      - "discovery.type=single-node"
     volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
+      - ./elasticsearch/data/:/usr/share/elasticsearch/data/
   kibana:
     container_name: kibana
     image: docker.elastic.co/kibana/kibana:6.6.0
-    depends_on: [elasticsearch]
+    depends_on: 
+      - elasticsearch
     networks: 
-      - cluster
+      - default
     ports: 
-      - "5601:5601"
-    environment:
-      # SERVER_NAME: kibana
-      # SERVER_HOST: 127.0.0.1
-      # SERVER_PORT: 5601
-      ELASTICSEARCH_HOSTS: http://elasticsearch:9200
+      - 5601:5601/tcp
+  logstash:
+    container_name: logstash
+    image: docker.elastic.co/logstash/logstash:6.6.0
+    depends_on: 
+      - elasticsearch
+    networks: 
+      - default
+    ports: 
+      - 5044:5044/tcp
+      - 9600:9600/tcp
+    volumes: 
+      - ./logstash.conf:/usr/share/logstash/pipeline/logstash.conf
+  filebeat:
+    container_name: filebeat
+    image: docker.elastic.co/beats/filebeat:6.6.0
+    depends_on: 
+      - logstash
+    networks: 
+      - default
+    volumes: 
+      - ./filebeat.yml:/usr/share/filebeat/filebeat.yml
+      - ./logs/:/usr/share/filebeat/logs/
 networks: 
-  cluster:
+  default:
     driver: bridge
