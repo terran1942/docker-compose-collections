@@ -1,54 +1,52 @@
-version: '3'
+version: '3.7'
 services:
   voltdb-1:
     container_name: voltdb-1
-    image: voltdb/voltdb-community
+    image: voltdb/voltdb-community:8.4
     networks: 
       - cluster
     ports:
-      - "192.168.0.130:11212:21212"
-      - "192.168.0.130:11211:21211"
-      - "192.168.0.130:18080:8080"
+      - "11212:21212"
+      - "11211:21211"
+      - "18080:8080"
     environment:
       HOST_COUNT: 3
       HOSTS:  voltdb-1,voltdb-2,voltdb-3
     volumes:
-      - /data/voltdb/deployment.xml:/opt/deployment.xml
-      - /data/voltdb/external:/opt/voltdb/external
-      - /data/voltdb/snapshot:/opt/voltdb/snapshot
+      - ./data/extend:/opt/voltdb/extend/
+      - ./data/snapshot:/opt/voltdb/snapshot/
   voltdb-2:
     container_name: voltdb-2
-    image: voltdb/voltdb-community
+    image: voltdb/voltdb-community:8.4
     networks: 
       - cluster
     ports:
-      - "192.168.0.130:21212:21212"
-      - "192.168.0.130:21211:21211"
-      - "192.168.0.130:28080:8080"
+      - "21212:21212"
+      - "21211:21211"
+      - "28080:8080"
     environment:
       HOST_COUNT: 3
       HOSTS:  voltdb-1,voltdb-2,voltdb-3
     volumes:
-      - /data/voltdb/deployment.xml:/opt/deployment.xml
-      - /data/voltdb/external:/opt/voltdb/external
-      - /data/voltdb/snapshot:/opt/voltdb/snapshot
+      - ./data/extend:/opt/voltdb/extend/
+      - ./data/snapshot:/opt/voltdb/snapshot/
   voltdb-3:
     container_name: voltdb-3
-    image: voltdb/voltdb-community
+    image: voltdb/voltdb-community:8.4
     networks: 
       - cluster
     ports:
-      - "192.168.0.130:31212:21212"
-      - "192.168.0.130:31211:21211"
-      - "192.168.0.130:38080:8080"
+      - "31212:21212"
+      - "31211:21211"
+      - "38080:8080"
     environment:
       HOST_COUNT: 3
       HOSTS:  voltdb-1,voltdb-2,voltdb-3
     volumes:
-      - /data/voltdb/deployment.xml:/opt/deployment.xml
-      - /data/voltdb/external:/opt/voltdb/external
-      - /data/voltdb/snapshot:/opt/voltdb/snapshot
-      
+      - ./data/extend:/opt/voltdb/extend/
+      - ./data/snapshot:/opt/voltdb/snapshot/
+
 networks: 
   cluster:
+    name: "voltdb-cluster"
     driver: bridge
