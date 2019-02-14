@@ -1,4 +1,4 @@
-version: '3.7'
+version: '3.5'
 services:
   zookeeper:
     container_name: zookeeper
@@ -66,5 +66,4 @@ services:
 
 networks: 
   cluster:
-    name: "kafka-cluster"
     driver: bridge
